@@ -31,28 +31,40 @@ const createUser = async (req,res) => {
     } 
 }
 
-const updateUser = async (req,res) => {
-    const {email,password,newPassword} = req.body
-    const userExists = User.findOne({email})
-    if(userExists){
-        const isValid = await bcrypt.compare(password,userExists.password)
-        if(isValid){
-            const salt = await bcrypt.genSalt(10)
-            const hashedPassword = await bcrypt.hash(newPassword,salt)
-            await User.findOneAndUpdate({email},{password:hashedPassword})
-            res.status(200).json({message:"Password updated successfully"})
-        }
-        else{
-            res.status(401).json({message:"Invalid credentials"})
-        }
+const updateUser = async (req, res) => {
+  const { email, password, newPassword } = req.body;
+try{
+    const user = await User.findOne({email})
+    if(!user){
+        res.status(404).json({message:"User not found"})
     }
-    else{
-        res.status(404).json({message:"User Not Found !"})
-    }
-}
+    const isMatched = await bcrypt.compare(password,user.password)
+    if(!isMatched) {return res.status(401).json({message:"Invalid credentials"})}
 
-const deleteUser = (req,res) => {
-    res.send("This is a DELETE route !")
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(newPassword,salt)
+    await User.updateOne({email},{password:hashedPassword})
+    res.status(201).send({message:"Password updated successfully"})
+}
+catch(e){
+    res.status(400).json({message:e.message})
+}
+};
+
+
+const deleteUser = async (req,res) => {
+    const {_id} = req.body
+    try{
+    const user = await User.findOne({_id})
+    if(!user){
+        res.status(404).json({message:"User not found"})
+    }
+    await User.deleteOne({_id})
+    res.status(200).json({message:"User deleted successfully"})
+    }
+    catch(e){
+        res.status(400).json({message:e.message})
+    }
 }
 
 export default {getUser,createUser,updateUser,deleteUser}
