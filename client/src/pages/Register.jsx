@@ -2,6 +2,7 @@ import React from 'react'
 import { z } from 'zod'
 import {useForm} from "react-hook-form"
 import {zodResolver} from "@hookform/resolvers/zod"
+import {RegisterUser} from '../api/useRegister'
 
 const userSchema = z.object({
     email:z.string().min(3).max(32).nonempty("Email is required").email(),
@@ -12,7 +13,7 @@ const Register = () => {
     const {register,handleSubmit,formState:{errors}} = useForm({resolver:zodResolver(userSchema)})
 
     const handleRegister = (data)=>{
-        console.log(data)
+        RegisterUser(data)
     }
   return (
     <form onSubmit={handleSubmit(handleRegister)}>
