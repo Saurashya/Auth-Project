@@ -16,18 +16,19 @@ const Register = () => {
         RegisterUser(data)
     }
   return (
-    <form onSubmit={handleSubmit(handleRegister)}>
-        <h1>Register User</h1>
-        <label>Email</label>
-        <input type="text" placeholder='Enter your email' {...register("email")}/>
+    <div className='w-full h-screen flex-center bg-[#fafafa]'>
+      <form onSubmit={handleSubmit(handleRegister)} className='flex flex-col gap-y-4 bg-blue-400 p-8 w-[400px] text-white rounded-lg shadow-xl'>
+        <h1 className='text-2xl'>Register User</h1>
+        <label className='label'>Email</label>
+        <input type="text" placeholder='Enter your email' {...register("email")} className='input-primary'/>
         {errors.email && <p style={{color:"red"}}>{errors.email.message}</p>}
         <br />
-        <label>Password</label>
-        <input type="password" placeholder='Enter your password' {...register("password")}/>
+        <label className='label'>Password</label>
+        <input type="password" placeholder='Enter your password' {...register("password")} className='input-primary'/>
         {errors.password && <p style={{color:"red"}}>{errors.password.message}</p>}
-        <button type='submit'>Register</button>
+        <button type='submit' className='btn-primary'>Register</button>
     </form>
+    </div>
   )
 }
-
 export default Register

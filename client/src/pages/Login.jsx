@@ -15,17 +15,19 @@ const Login = () => {
         LoginUser(data)
     }
   return (
-    <form onSubmit={handleSubmit(handleLogin)}>
-        <h1>Login User</h1>
-        <label>Email</label>
-        <input type="text" placeholder='Enter your email' {...register("email")}/>
+   <div className='w-full h-screen flex-center bg-[#fafafa]'>
+     <form onSubmit={handleSubmit(handleLogin)} className='flex flex-col gap-y-4 bg-blue-400 p-8 w-[400px] text-white rounded-lg shadow-xl'>
+        <h1 className='text-2xl'>Login User</h1>
+        <label className='label'>Email</label>
+        <input type="text" placeholder='Enter your email' {...register("email")} className='input-primary'/>
         {errors.email && <p style={{color:"red"}}>{errors.email.message}</p>}
         <br />
-        <label>Password</label>
-        <input type="password" placeholder='Enter your password' {...register("password")}/>
+        <label className='label'>Password</label>
+        <input type="password" placeholder='Enter your password' {...register("password")} className='input-primary'/>
         {errors.password && <p style={{color:"red"}}>{errors.password.message}</p>}
-        <button type='submit'>Login</button>
+        <button type='submit' className='btn-primary'>Login</button>
     </form>
+   </div>
   )
 }
 
